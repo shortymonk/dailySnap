@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.hfad.someapp.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="com.hfad.someapp.FriendsFragment"
+        android:label="Friends"
+        tools:layout="@layout/fragment_friends" />
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.hfad.someapp.HelpFragment"
+        android:label="Help"
+        tools:layout="@layout/fragment_help" />
+</navigation>

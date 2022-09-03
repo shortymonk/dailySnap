@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SomeApp</string>
+    <string name="home">Home</string>
+    <string name="friends">Friends</string>
+    <string name="support">Support</string>
+    <string name="help">Help</string>
+    <string name="it_s_the_friends_fragment">It\'s the Friends fragment</string>
+    <string name="it_s_the_help_fragment">It\'s the Help fragment</string>
+    <string name="it_s_home_fragment">It\'s home fragment</string>
+    <string name="push_to_logcat">push to logcat</string>
+</resources>
