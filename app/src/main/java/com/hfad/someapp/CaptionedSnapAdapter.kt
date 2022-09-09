@@ -1,9 +1,7 @@
 package com.hfad.someapp
-
-import android.media.ThumbnailUtils
+import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
 import android.os.Build
-import android.os.CancellationSignal
-import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +9,38 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 import java.io.File
+
 
 class CaptionedSnapAdapter(private val snaps: List<String>) :
     RecyclerView.Adapter<CaptionedSnapAdapter.SnapViewHolder>() {
 
-    class SnapViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val snapVideoView: ImageView = itemView.findViewById(R.id.snap_thumbnail)
+    inner class SnapViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val snapImageView: ImageView = itemView.findViewById(R.id.snap_thumbnail)
+//        val snapVideoView: VideoView = itemView.findViewById(R.id.snap_video)
         val snapName: TextView = itemView.findViewById(R.id.snap_name)
+        var job: Job? = null
+        var loadingPosition = 0
+
+        fun updateText(position: Int) {
+            val path = snaps[position]
+            snapName.apply {
+                text = File(path).nameWithoutExtension
+                contentDescription = File(path).nameWithoutExtension
+            }
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O_MR1)
+        fun getImage(position: Int): Bitmap? {
+            val path = snaps[position]
+            val retriever = MediaMetadataRetriever()
+            retriever.setDataSource(path)
+            return retriever.getScaledFrameAtTime(
+                0, MediaMetadataRetriever.OPTION_CLOSEST,
+                150, 150
+            )
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SnapViewHolder {
@@ -27,21 +49,32 @@ class CaptionedSnapAdapter(private val snaps: List<String>) :
         return SnapViewHolder(itemView)
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @OptIn(DelicateCoroutinesApi::class)
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: SnapViewHolder, position: Int) {
-        val path = snaps[position]
-        val size = Size(200, 200)
-        val cs = CancellationSignal()
-        val file = File(path)
-        val thumbnail =  ThumbnailUtils.createVideoThumbnail(file, size, cs)
-        holder.snapVideoView.apply {
-            setImageBitmap(thumbnail)
-            contentDescription = file.name
+        holder.updateText(position)
+        val blank = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888)
+        holder.snapImageView.setImageBitmap(blank)
+
+        holder.loadingPosition = position
+
+        GlobalScope.launch {
+            if ((holder.job != null) && (!holder.job!!.isActive)) {
+                holder.job!!.cancel()
+            }
+
+            holder.job = async {
+                val bitmap = holder.getImage(position)
+                holder.snapImageView.post(Runnable {
+                    if (holder.loadingPosition == position)
+                        holder.snapImageView.setImageBitmap(bitmap)
+                })
+            }
         }
-        holder.snapName.text = file.nameWithoutExtension
     }
 
     override fun getItemCount(): Int {
         return snaps.size
     }
 }
+

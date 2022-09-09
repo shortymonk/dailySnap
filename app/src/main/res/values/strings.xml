@@ -8,4 +8,5 @@
     <string name="it_s_the_help_fragment">It\'s the Help fragment</string>
     <string name="it_s_home_fragment">It\'s home fragment</string>
     <string name="push_to_logcat">push to logcat</string>
+    <string name="video">Video</string>
 </resources>

@@ -1,8 +1,11 @@
 package com.hfad.someapp
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.provider.MediaStore
+import java.io.FileOutputStream
 
 class Snap {
 
@@ -18,7 +21,8 @@ class Snap {
             try {
                 cursor.moveToFirst()
                 do {
-                    videList.add(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)))
+                    val snapPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA))
+                    videList.add(snapPath)
                 } while (cursor.moveToNext())
                 cursor.close()
             } catch (e: java.lang.Exception) {

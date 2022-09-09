@@ -1,7 +1,11 @@
 package com.hfad.someapp
 
+import android.content.ContentProvider
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.UserDictionary
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
@@ -13,6 +17,9 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,6 +46,13 @@ class MainActivity : AppCompatActivity() {
 
         toolbar.setupWithNavController(navController, appBarConfiguration)
         NavigationUI.setupWithNavController(navView, navController)
+//        val name = "testFile.txt"
+//        val directory = this.getDir("testFiles", Context.MODE_PRIVATE)
+//        val testFile = File(directory, name)
+//
+//        FileOutputStream(testFile)
+//        val isFileExist = testFile.exists()
+//        Log.d("checkPath", "${testFile.name} : $isFileExist")
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
