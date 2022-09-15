@@ -26,8 +26,9 @@ class CaptionedSnapAdapter(private val snaps: List<String>) :
         fun updateText(position: Int) {
             val path = snaps[position]
             snapName.apply {
-                text = File(path).nameWithoutExtension
-                contentDescription = File(path).nameWithoutExtension
+                path.substringAfterLast("/")
+                text = path.substringAfterLast("/")
+                contentDescription = path.substringAfterLast("/")
             }
         }
 
@@ -38,7 +39,7 @@ class CaptionedSnapAdapter(private val snaps: List<String>) :
             retriever.setDataSource(path)
             return retriever.getScaledFrameAtTime(
                 0, MediaMetadataRetriever.OPTION_CLOSEST,
-                150, 150
+                100, 100
             )
         }
     }
