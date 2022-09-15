@@ -10,15 +10,12 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
-import java.io.File
-
 
 class CaptionedSnapAdapter(private val snaps: List<String>) :
     RecyclerView.Adapter<CaptionedSnapAdapter.SnapViewHolder>() {
 
     inner class SnapViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val snapImageView: ImageView = itemView.findViewById(R.id.snap_thumbnail)
-//        val snapVideoView: VideoView = itemView.findViewById(R.id.snap_video)
         val snapName: TextView = itemView.findViewById(R.id.snap_name)
         var job: Job? = null
         var loadingPosition = 0
@@ -67,8 +64,9 @@ class CaptionedSnapAdapter(private val snaps: List<String>) :
             holder.job = async {
                 val bitmap = holder.getImage(position)
                 holder.snapImageView.post(Runnable {
-                    if (holder.loadingPosition == position)
+                    if (holder.loadingPosition == position) {
                         holder.snapImageView.setImageBitmap(bitmap)
+                    }
                 })
             }
         }

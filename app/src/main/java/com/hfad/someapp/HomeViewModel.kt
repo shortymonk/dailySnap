@@ -17,32 +17,12 @@ class HomeViewModel : ViewModel() {
             MediaStore.Video.Media.DISPLAY_NAME
         )
 
-//        val size = Size(200, 200)
-//        val cs = CancellationSignal()
-//        val directory = appContext.getDir("thumbnails", Context.MODE_PRIVATE)
-
         val cursor: Cursor = appContext.contentResolver
             .query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null)!!
         try {
             cursor.moveToFirst()
             do {
                 val fullPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA))
-//                val name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME))
-//                val thumbnail = File(directory, "$name.jpeg")
-//
-//                if (!thumbnail.exists()) {
-//                    try {
-//                        val imageOut = FileOutputStream(thumbnail)
-//                        val contentResolver = appContext.contentResolver
-//                        val bitmap = contentResolver.loadThumbnail(fullPath.toUri(), size, cs)
-//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, imageOut)
-//                        imageOut.flush()
-//                        imageOut.close()
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                    }
-//                }
-
                 videList.add(fullPath)
             } while (cursor.moveToNext())
             cursor.close()

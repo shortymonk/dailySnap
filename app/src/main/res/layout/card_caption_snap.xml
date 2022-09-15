@@ -21,13 +21,6 @@
             android:layout_weight="1"
             android:scaleType="centerCrop"
             android:contentDescription="@string/video"
-            android:visibility="visible"/>
-
-        <VideoView
-            android:id="@+id/snap_video"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
             android:visibility="gone"/>
 
         <TextView
