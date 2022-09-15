@@ -15,7 +15,9 @@ class CaptionedSnapAdapter(private val snaps: List<String>) :
     RecyclerView.Adapter<CaptionedSnapAdapter.SnapViewHolder>() {
 
     inner class SnapViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val snapImageView: ImageView = itemView.findViewById(R.id.snap_thumbnail)
+//        val snapImageView: ImageView = itemView.findViewById(R.id.snap_thumbnail)
+        val snapStubImageView: ImageView = itemView.findViewById(R.id.snap_stub)
+        val snapImageView: ImageView = itemView.findViewById(R.id.snap_image)
         val snapName: TextView = itemView.findViewById(R.id.snap_name)
         var job: Job? = null
         var loadingPosition = 0
@@ -52,7 +54,17 @@ class CaptionedSnapAdapter(private val snaps: List<String>) :
     override fun onBindViewHolder(holder: SnapViewHolder, position: Int) {
         holder.updateText(position)
         val blank = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888)
-        holder.snapImageView.setImageBitmap(blank)
+
+        holder.snapStubImageView.apply {
+            setImageBitmap(blank)
+            alpha = 1F
+            scaleX = 1F
+            scaleY = 1F
+        }
+        holder.snapImageView.apply {
+            setImageBitmap(blank)
+            alpha = 0F
+        }
 
         holder.loadingPosition = position
 
@@ -66,6 +78,16 @@ class CaptionedSnapAdapter(private val snaps: List<String>) :
                 holder.snapImageView.post(Runnable {
                     if (holder.loadingPosition == position) {
                         holder.snapImageView.setImageBitmap(bitmap)
+                        holder.snapImageView.animate()
+                            .alpha(1f)
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .duration = 250L
+                        holder.snapStubImageView.animate()
+                            .alpha(0f)
+                            .scaleX(0f)
+                            .scaleY(0f)
+                            .duration = 250L
                     }
                 })
             }

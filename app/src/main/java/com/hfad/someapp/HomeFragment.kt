@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
         val snapRecycler = view.findViewById<RecyclerView>(R.id.snap_recycler)
         snapRecycler.apply {
             setHasFixedSize(true)
-            setItemViewCacheSize(30)
+            setItemViewCacheSize(20)
             isNestedScrollingEnabled = false
         }
         val layoutManager = GridLayoutManager(activity, 2)
