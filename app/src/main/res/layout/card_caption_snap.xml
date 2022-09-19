@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerCrop"
             android:alpha="1"
-            android:contentDescription="Preview stub" />
+            android:contentDescription="@string/preview_stub" />
 
         <ImageView
             android:id="@+id/snap_image"
@@ -34,8 +34,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:scaleType="centerCrop"
-            android:alpha="0"
-            android:contentDescription="Preview" />
+            android:alpha="1"
+            android:contentDescription="@string/preview" />
 
         <TextView
             android:id="@+id/snap_name"
