@@ -2,14 +2,12 @@ package com.hfad.someapp
 
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
@@ -106,7 +104,7 @@ class CaptionedSnapAdapter(
     override fun getItemCount(): Int {
         return snaps.size
     }
-    
+
     fun loadBitmap(position: Int): Bitmap? {
         val fullPath = snaps[position]
         val retriever = MediaMetadataRetriever()
