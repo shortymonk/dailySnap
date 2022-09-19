@@ -2,14 +2,11 @@ package com.hfad.someapp
 
 import android.content.Context
 import android.database.Cursor
-import android.os.Build
 import android.provider.MediaStore
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     fun getSnapList(appContext: Context): List<String> {
         val videList: HashSet<String> = HashSet()
         val projection = arrayOf(
