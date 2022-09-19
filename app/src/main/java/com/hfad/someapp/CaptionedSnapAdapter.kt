@@ -46,7 +46,6 @@ class CaptionedSnapAdapter(
         return SnapViewHolder(itemView)
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onBindViewHolder(holder: SnapViewHolder, position: Int) {
         holder.updateText(position)
         val blank = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888)
@@ -107,8 +106,7 @@ class CaptionedSnapAdapter(
     override fun getItemCount(): Int {
         return snaps.size
     }
-
-    @RequiresApi(Build.VERSION_CODES.O_MR1)
+    
     fun loadBitmap(position: Int): Bitmap? {
         val fullPath = snaps[position]
         val retriever = MediaMetadataRetriever()
