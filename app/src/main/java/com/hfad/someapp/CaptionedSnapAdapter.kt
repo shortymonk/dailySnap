@@ -8,15 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 
 class CaptionedSnapAdapter(
-    private val snaps: List<String>,
+//    private val snaps: List<String>,
+    private val snapList: List<Snap>,
     private val cacheDir: File,
     private val asyncLoader: LifecycleCoroutineScope
     ) : RecyclerView.Adapter<CaptionedSnapAdapter.SnapViewHolder>() {
@@ -29,11 +30,14 @@ class CaptionedSnapAdapter(
         var loadingPosition = 0
 
         fun updateText(position: Int) {
-            val path = snaps[position]
+//            val path = snapList[position]
+            val snap = snapList[position]
             snapName.apply {
-                path.substringAfterLast("/")
-                text = path.substringAfterLast("/")
-                contentDescription = path.substringAfterLast("/")
+                text = snap.name
+                contentDescription = snap.name
+//                path.substringAfterLast("/")
+//                text = path.substringAfterLast("/")
+//                contentDescription = path.substringAfterLast("/")
             }
         }
     }
@@ -47,11 +51,11 @@ class CaptionedSnapAdapter(
     override fun onBindViewHolder(holder: SnapViewHolder, position: Int) {
         holder.updateText(position)
         val blank = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888)
-        val imageFile = File(cacheDir, snaps[position].hashCode().toString() + ".jpeg")
+        val snap = snapList[position]
 
-        if (imageFile.exists()) {
+        if (snap.thumbnail.exists()) {
             holder.snapImageView.apply {
-                setImageURI(imageFile.toUri())
+                setImageURI(snap.thumbnailUri)
                 animate()
                     .alpha(1f)
                     .scaleX(1f)
@@ -102,27 +106,28 @@ class CaptionedSnapAdapter(
     }
 
     override fun getItemCount(): Int {
-        return snaps.size
+        return snapList.size
     }
 
-    fun loadBitmap(position: Int): Bitmap? {
-        val fullPath = snaps[position]
+    private fun loadBitmap(position: Int): Bitmap? {
+        val snap = snapList[position]
         val retriever = MediaMetadataRetriever()
-        retriever.setDataSource(fullPath)
+        retriever.setDataSource(snap.fullPath)
         val bitmap = retriever.getScaledFrameAtTime(
             0, MediaMetadataRetriever.OPTION_CLOSEST,
             200, 200
         )
-        val name = fullPath.hashCode().toString() + ".jpeg"
-        val file = File(cacheDir, name)
 
-        if (!file.exists()) {
-            val fOut = FileOutputStream(file)
+        try {
+            val fOut = FileOutputStream(snap.thumbnail)
             bitmap?.compress(Bitmap.CompressFormat.JPEG, 85, fOut)
             fOut.flush()
             fOut.close()
-            Log.d("file is written", name)
+            Log.d("file is written", snap.name)
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
+
         return bitmap
     }
 }

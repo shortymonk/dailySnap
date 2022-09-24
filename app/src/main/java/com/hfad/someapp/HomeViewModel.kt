@@ -4,11 +4,13 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.MediaStore
 import androidx.lifecycle.ViewModel
+import java.io.File
 
 class HomeViewModel : ViewModel() {
 
-    fun getSnapList(appContext: Context): List<String> {
-        val videList: HashSet<String> = HashSet()
+    fun getSnapList(appContext: Context): List<Snap> {
+//        val snapList: HashSet<String> = HashSet()
+        val snapList = mutableListOf<Snap>()
         val projection = arrayOf(
             MediaStore.Video.VideoColumns.DATA,
             MediaStore.Video.Media.DISPLAY_NAME
@@ -20,12 +22,13 @@ class HomeViewModel : ViewModel() {
             cursor.moveToFirst()
             do {
                 val fullPath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA))
-                videList.add(fullPath)
+                val cacheDir = File(appContext.cacheDir.toString() + IMAGE_CACHE)
+                snapList.add(Snap(fullPath, cacheDir))
             } while (cursor.moveToNext())
             cursor.close()
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-        return ArrayList(videList)
+        return snapList.toList()
     }
 }

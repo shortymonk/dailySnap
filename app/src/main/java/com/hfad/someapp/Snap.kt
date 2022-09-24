@@ -5,14 +5,14 @@ import androidx.core.net.toUri
 import java.io.File
 
 class Snap(path: String, cacheDir: File) {
-    var name = ""
+    var name = path.substringAfterLast("/")
     val fullPath = path
-    val pathHashCode = path.hashCode().toString()
+    private val pathHashCode = path.hashCode().toString()
     val thumbnail by lazy {
-        File(cacheDir, path)
+        File(cacheDir, "$pathHashCode.jpeg")
     }
     val thumbnailUri: Uri by lazy {
-        File(cacheDir, "$pathHashCode.jpeg").toUri()
+        thumbnail.toUri()
     }
 
 }
