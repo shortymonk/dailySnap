@@ -1,4 +1,4 @@
-package com.hfad.someapp
+package com.shortymonk.someapp
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

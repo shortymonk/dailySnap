@@ -1,4 +1,4 @@
-package com.hfad.someapp
+package com.shortymonk.someapp
 
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
@@ -44,8 +45,8 @@ class HomeFragment : Fragment() {
         }
         val layoutManager = GridLayoutManager(activity, 2)
         val snapList = homeViewModel.getSnapList(requireContext())
-        val asyncLoader = viewLifecycleOwner.lifecycleScope
-        val adapter = CaptionedSnapAdapter(snapList, cacheDir, asyncLoader)
+        val scope = viewLifecycleOwner.lifecycleScope
+        val adapter = CaptionedSnapAdapter(snapList, scope)
 
         snapRecycler.apply {
             setAdapter(adapter)
@@ -53,18 +54,5 @@ class HomeFragment : Fragment() {
         }
 
         return view
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val isReadGranted = ContextCompat.checkSelfPermission(requireContext(), PERMISSION_READ) !=
-                PackageManager.PERMISSION_GRANTED
-        if (isReadGranted) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(PERMISSION_READ),
-                PERMISSION_REQUEST_CODE
-            )
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.hfad.someapp
+package com.shortymonk.someapp
 
 import android.net.Uri
 import androidx.core.net.toUri

@@ -1,4 +1,4 @@
-package com.hfad.someapp
+package com.shortymonk.someapp
 /*
 import android.content.Context
 import androidx.lifecycle.ViewModel

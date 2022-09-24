@@ -1,4 +1,4 @@
-package com.hfad.someapp
+package com.shortymonk.someapp
 
 import android.content.Context
 import android.database.Cursor
@@ -9,7 +9,6 @@ import java.io.File
 class HomeViewModel : ViewModel() {
 
     fun getSnapList(appContext: Context): List<Snap> {
-//        val snapList: HashSet<String> = HashSet()
         val snapList = mutableListOf<Snap>()
         val projection = arrayOf(
             MediaStore.Video.VideoColumns.DATA,

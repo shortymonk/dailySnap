@@ -1,4 +1,4 @@
-package com.hfad.someapp
+package com.shortymonk.someapp
 
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
@@ -11,15 +11,12 @@ import android.widget.TextView
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
-import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
 class CaptionedSnapAdapter(
-//    private val snaps: List<String>,
     private val snapList: List<Snap>,
-    private val cacheDir: File,
-    private val asyncLoader: LifecycleCoroutineScope
+    private val scope: LifecycleCoroutineScope
     ) : RecyclerView.Adapter<CaptionedSnapAdapter.SnapViewHolder>() {
 
     inner class SnapViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,14 +27,10 @@ class CaptionedSnapAdapter(
         var loadingPosition = 0
 
         fun updateText(position: Int) {
-//            val path = snapList[position]
             val snap = snapList[position]
             snapName.apply {
                 text = snap.name
                 contentDescription = snap.name
-//                path.substringAfterLast("/")
-//                text = path.substringAfterLast("/")
-//                contentDescription = path.substringAfterLast("/")
             }
         }
     }
@@ -77,7 +70,7 @@ class CaptionedSnapAdapter(
 
             holder.loadingPosition = position
 
-            asyncLoader.launch(Dispatchers.IO) {
+            scope.launch(Dispatchers.IO) {
                 if ((holder.job != null) && (!holder.job!!.isActive)) {
                     holder.job!!.cancel()
                 }

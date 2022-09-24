@@ -1,12 +1,17 @@
-package com.hfad.someapp
+package com.shortymonk.someapp
 
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
@@ -51,4 +56,18 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val isReadGranted = ContextCompat.checkSelfPermission(this,
+            HomeFragment.PERMISSION_READ
+        ) ==
+                PackageManager.PERMISSION_GRANTED
+        if (!isReadGranted) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(HomeFragment.PERMISSION_READ),
+                HomeFragment.PERMISSION_REQUEST_CODE
+            )
+        }
+    }
 }
