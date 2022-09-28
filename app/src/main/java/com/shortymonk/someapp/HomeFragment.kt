@@ -1,9 +1,11 @@
 package com.shortymonk.someapp
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -27,6 +29,8 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val orientation = requireContext().resources.configuration.orientation
+        val spanCount = if (orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 3
 
         cacheDir = File(requireContext().cacheDir.toString() + IMAGE_CACHE)
         if (!cacheDir.exists()) cacheDir.mkdir()
@@ -39,7 +43,7 @@ class HomeFragment : Fragment() {
             setItemViewCacheSize(20)
             isNestedScrollingEnabled = false
         }
-        val layoutManager = GridLayoutManager(activity, 2)
+        val layoutManager = GridLayoutManager(activity, spanCount)
         /*val*/ snapList = homeViewModel.getSnapList(requireContext())
         val scope = viewLifecycleOwner.lifecycleScope
         val adapter = CaptionedSnapAdapter(snapList, scope)
