@@ -1,16 +1,12 @@
 package com.shortymonk.someapp
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.io.File
@@ -21,10 +17,10 @@ class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var cacheDir: File
+    private lateinit var snapList: List<Snap>
 
     companion object {
         const val PERMISSION_READ = android.Manifest.permission.READ_EXTERNAL_STORAGE
-        const val PERMISSION_REQUEST_CODE = 2128
     }
 
     override fun onCreateView(
@@ -44,7 +40,7 @@ class HomeFragment : Fragment() {
             isNestedScrollingEnabled = false
         }
         val layoutManager = GridLayoutManager(activity, 2)
-        val snapList = homeViewModel.getSnapList(requireContext())
+        /*val*/ snapList = homeViewModel.getSnapList(requireContext())
         val scope = viewLifecycleOwner.lifecycleScope
         val adapter = CaptionedSnapAdapter(snapList, scope)
 
@@ -55,4 +51,5 @@ class HomeFragment : Fragment() {
 
         return view
     }
+
 }

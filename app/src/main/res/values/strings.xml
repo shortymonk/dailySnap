@@ -11,4 +11,5 @@
     <string name="video">Video</string>
     <string name="preview_stub">Preview stub</string>
     <string name="preview">Preview</string>
+    <string name="permission_denied">Reading permission required</string>
 </resources>
