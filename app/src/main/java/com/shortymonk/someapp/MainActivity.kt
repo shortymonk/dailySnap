@@ -97,6 +97,7 @@ class MainActivity : AppCompatActivity() {
             PERMISSION_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("SomeAppPermission", "Permission is granted")
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.homeFragment)
                 } else {
                     showNotification()
                     Log.d("SomeAppPermission", "Permission isn't granted")
