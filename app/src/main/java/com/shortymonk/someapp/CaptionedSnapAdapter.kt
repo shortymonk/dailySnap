@@ -1,5 +1,6 @@
 package com.shortymonk.someapp
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
@@ -16,15 +18,29 @@ import java.io.IOException
 
 class CaptionedSnapAdapter(
     private val snapList: List<Snap>,
-    private val scope: LifecycleCoroutineScope
+    private val scope: LifecycleCoroutineScope,
+    private val context: Context,
+    private val container: SnapContainer
     ) : RecyclerView.Adapter<CaptionedSnapAdapter.SnapViewHolder>() {
 
     inner class SnapViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val snapStubImageView: ImageView = itemView.findViewById(R.id.snap_stub)
+        val stubSnapImageView: ImageView = itemView.findViewById(R.id.snap_stub)
         val snapImageView: ImageView = itemView.findViewById(R.id.snap_image)
         private val snapName: TextView = itemView.findViewById(R.id.snap_name)
         var job: Job? = null
         var loadingPosition = 0
+
+        init {
+            itemView.setOnClickListener {
+                val snap = snapList[adapterPosition]
+                container.videoView.apply {
+                    setVideoPath(snap.fullPath)
+                    visibility = View.VISIBLE
+                }
+                container.background.visibility = View.VISIBLE
+                Toast.makeText(context, snap.fullPath, Toast.LENGTH_SHORT).show()
+            }
+        }
 
         fun updateText(position: Int) {
             val snap = snapList[position]
@@ -55,9 +71,9 @@ class CaptionedSnapAdapter(
                     .scaleY(1f)
                     .duration = 250L
             }
-            holder.snapStubImageView.visibility = View.GONE
+            holder.stubSnapImageView.visibility = View.GONE
         } else {
-            holder.snapStubImageView.apply {
+            holder.stubSnapImageView.apply {
                 setImageBitmap(blank)
                 alpha = 1F
                 scaleX = 1F
@@ -86,7 +102,7 @@ class CaptionedSnapAdapter(
                                 .scaleX(1f)
                                 .scaleY(1f)
                                 .duration = 250L
-                            holder.snapStubImageView.animate()
+                            holder.stubSnapImageView.animate()
                                 .alpha(0f)
                                 .scaleX(0f)
                                 .scaleY(0f)
@@ -96,6 +112,16 @@ class CaptionedSnapAdapter(
                 }
             }
         }
+
+       /* holder.snapImageView.setOnClickListener {
+            container.videoView.apply {
+                setVideoPath(snap.fullPath)
+                visibility = View.VISIBLE
+            }
+            container.background.visibility = View.VISIBLE
+            val message = snapList[position].fullPath
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }*/
     }
 
     override fun getItemCount(): Int {

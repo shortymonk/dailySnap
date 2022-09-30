@@ -1,10 +1,12 @@
 package com.shortymonk.someapp
 
 import android.net.Uri
+import android.widget.VideoView
 import androidx.core.net.toUri
 import java.io.File
 
 class Snap(path: String, cacheDir: File) {
+
     var name = path.substringAfterLast("/")
     val fullPath = path
     private val pathHashCode = path.hashCode().toString()

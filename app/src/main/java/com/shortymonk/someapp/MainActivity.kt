@@ -141,4 +141,5 @@ class MainActivity : AppCompatActivity() {
         notificationManager.notify(NOTIFICATION_ID, builder.build())
         isRestart = true
     }
+
 }

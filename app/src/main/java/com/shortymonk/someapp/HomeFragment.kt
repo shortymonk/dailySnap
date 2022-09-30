@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +18,6 @@ class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var cacheDir: File
-    private lateinit var snapList: List<Snap>
 
     companion object {
         const val PERMISSION_READ = android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -37,16 +35,20 @@ class HomeFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val snapRecycler = view.findViewById<RecyclerView>(R.id.snap_recycler)
+        val snapRecycler = view.findViewById<RecyclerView>(R.id.snap_recycler_view)
         snapRecycler.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(20)
             isNestedScrollingEnabled = false
         }
         val layoutManager = GridLayoutManager(activity, spanCount)
-        /*val*/ snapList = homeViewModel.getSnapList(requireContext())
+        val snapList = homeViewModel.getSnapList(requireContext())
         val scope = viewLifecycleOwner.lifecycleScope
-        val adapter = CaptionedSnapAdapter(snapList, scope)
+        val snapContainer = SnapContainer(
+            view.findViewById(R.id.snap_video_view),
+            view.findViewById(R.id.snap_video_background)
+        )
+        val adapter = CaptionedSnapAdapter(snapList, scope, requireContext(), snapContainer)
 
         snapRecycler.apply {
             setAdapter(adapter)
@@ -55,5 +57,4 @@ class HomeFragment : Fragment() {
 
         return view
     }
-
 }
