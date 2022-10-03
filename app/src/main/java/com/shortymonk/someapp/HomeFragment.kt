@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
             view.findViewById(R.id.snap_video_view),
             view.findViewById(R.id.snap_video_background)
         )
-        val adapter = CaptionedSnapAdapter(snapList, scope, requireContext(), snapContainer)
+        val adapter = CaptionedSnapAdapter(snapList, scope, snapContainer)
 
         snapRecycler.apply {
             setAdapter(adapter)

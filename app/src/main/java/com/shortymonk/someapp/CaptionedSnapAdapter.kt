@@ -17,8 +17,7 @@ import java.io.IOException
 class CaptionedSnapAdapter(
     private val snapList: List<Snap>,
     private val scope: LifecycleCoroutineScope,
-    private val context: Context,
-   private val container: SnapContainer
+    private val container: SnapContainer
     ) : RecyclerView.Adapter<CaptionedSnapAdapter.SnapViewHolder>() {
 
     inner class SnapViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
