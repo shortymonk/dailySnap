@@ -107,16 +107,6 @@ class CaptionedSnapAdapter(
             }
             it.visibility = View.INVISIBLE
         }
-
-       /* holder.snapImageView.setOnClickListener {
-            container.videoView.apply {
-                setVideoPath(snap.fullPath)
-                visibility = View.VISIBLE
-            }
-            container.background.visibility = View.VISIBLE
-            val message = snapList[position].fullPath
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        }*/
     }
 
     override fun getItemCount(): Int {
