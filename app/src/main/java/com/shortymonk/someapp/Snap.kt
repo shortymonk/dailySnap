@@ -1,7 +1,6 @@
 package com.shortymonk.someapp
 
 import android.net.Uri
-import android.widget.VideoView
 import androidx.core.net.toUri
 import java.io.File
 

@@ -13,6 +13,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -37,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val toolbar: MaterialToolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        val mainToolbar: MaterialToolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(mainToolbar)
 
         val navHostFragment =supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -54,8 +55,14 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = builder.build()
         val navView = findViewById<NavigationView>(R.id.nav_view)
 
-        toolbar.setupWithNavController(navController, appBarConfiguration)
+        mainToolbar.setupWithNavController(navController, appBarConfiguration)
         NavigationUI.setupWithNavController(navView, navController)
+
+        navController.addOnDestinationChangedListener { controller, _, _ ->
+            val home = controller.findDestination(R.id.homeFragment)
+            val currentDestination = controller.currentDestination
+            mainToolbar.visibility = if (currentDestination != home) View.VISIBLE else View.GONE
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
