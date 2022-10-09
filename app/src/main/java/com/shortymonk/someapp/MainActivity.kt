@@ -13,7 +13,6 @@ import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -47,8 +46,7 @@ class MainActivity : AppCompatActivity() {
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         val builder = AppBarConfiguration.Builder(setOf(
             R.id.homeFragment,
-            R.id.friendsFragment,
-            R.id.helpFragment
+            R.id.friendsFragment
         ))
         builder.setOpenableLayout(drawer)
 
@@ -57,12 +55,6 @@ class MainActivity : AppCompatActivity() {
 
         mainToolbar.setupWithNavController(navController, appBarConfiguration)
         NavigationUI.setupWithNavController(navView, navController)
-
-        navController.addOnDestinationChangedListener { controller, _, _ ->
-            val home = controller.findDestination(R.id.homeFragment)
-            val currentDestination = controller.currentDestination
-            mainToolbar.visibility = if (currentDestination != home) View.VISIBLE else View.GONE
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
